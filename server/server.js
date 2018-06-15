@@ -15,7 +15,15 @@ app.use(express.static(publicPath));
 io.on('connection',(socket)=>{
   console.log('New user connected');
 
-
+  socket.emit('newMessage',{
+    from:'Admin',
+    text:'Welcome'
+  });
+  socket.broadcast.emit('newMessage',{
+    from:'Admin',
+    text:'new user joined',
+    createdAt:new Date().getTime()  
+  });
   //if you want to send data and send multiple data
   //then emit object
   //emit is not a listener so not providing ca;lback function
@@ -31,6 +39,12 @@ io.on('connection',(socket)=>{
     text:message.text,
     createdAt:new Date().getTime()
   });
+  // socket.broadcast.emit('newMessage',{
+  // from:message.from,
+  // text:message.text,
+  // createdAt:new Date().getTime()
+  // });
+
   });
   //we are in our node code therefore we can use arrow function
 
