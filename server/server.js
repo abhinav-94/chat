@@ -15,11 +15,7 @@ app.use(express.static(publicPath));
 io.on('connection',(socket)=>{
   console.log('New user connected');
 
-  socket.emit('newMessage',{
-    from:'mike',
-    text:'hey there ',
-    
-  });
+
   //if you want to send data and send multiple data
   //then emit object
   //emit is not a listener so not providing ca;lback function
@@ -30,6 +26,11 @@ io.on('connection',(socket)=>{
 
   socket.on('createMessage',(message)=>{
   console.log("create message",message);
+  io.emit('newMessage',{
+    from:message.from,
+    text:message.text,
+    createdAt:new Date().getTime()
+  });
   });
   //we are in our node code therefore we can use arrow function
 

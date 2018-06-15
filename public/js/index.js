@@ -4,10 +4,7 @@ var socket=io();
  socket.on('connect',function () {
    console.log("connected to server");
 
-   socket.emit('createMessage',{
-     from:'abhin',
-     text:'hey'
-   });
+
 
  });
  //we are using the arrow function available to us in es6
@@ -22,6 +19,5 @@ var socket=io();
 //data emitted from client side is sent as argument to callback function
 socket.on('newMessage',function(message){
   console.log("new message",message);
-
 
 });
