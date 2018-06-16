@@ -4,6 +4,7 @@ const http=require('http'); //built in module no need to install we can simply r
 const express=require('express');
 const nodemon=require('nodemon');
 const socketIO=require('socket.io');
+const {generateMessage}=require('./utils/message');
 var app=express(); //app variable for configuring our express application
 
 const publicPath=path.join(__dirname,'../public');
@@ -12,33 +13,23 @@ console.log(publicPath);
 var server=http.createServer(app);
 var io=socketIO(server);
 app.use(express.static(publicPath));
+
+
 io.on('connection',(socket)=>{
   console.log('New user connected');
-
-  socket.emit('newMessage',{
-    from:'Admin',
-    text:'Welcome'
-  });
-  socket.broadcast.emit('newMessage',{
-    from:'Admin',
-    text:'new user joined',
-    createdAt:new Date().getTime()  
-  });
+  socket.emit('newMessage',generateMessage('Admin','Welocme to chat'));
+  socket.broadcast.emit('newMessage',generateMessage('Admin','new user joined'));
   //if you want to send data and send multiple data
   //then emit object
   //emit is not a listener so not providing ca;lback function
-
   socket.on('disconnect',()=>{
     console.log("User was disconnected");
   });
 
   socket.on('createMessage',(message)=>{
   console.log("create message",message);
-  io.emit('newMessage',{
-    from:message.from,
-    text:message.text,
-    createdAt:new Date().getTime()
-  });
+
+  io.emit('newMessage',generateMessage(message.from,message.text));
   // socket.broadcast.emit('newMessage',{
   // from:message.from,
   // text:message.text,
