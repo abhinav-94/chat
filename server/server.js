@@ -26,22 +26,18 @@ io.on('connection',(socket)=>{
     console.log("User was disconnected");
   });
 
-  socket.on('createMessage',(message)=>{
+  socket.on('createMessage',(message,callback)=>{
   console.log("create message",message);
-
   io.emit('newMessage',generateMessage(message.from,message.text));
   // socket.broadcast.emit('newMessage',{
   // from:message.from,
   // text:message.text,
   // createdAt:new Date().getTime()
   // });
+  callback('this is from the server');//it is going to send an event back to the server
 
   });
   //we are in our node code therefore we can use arrow function
-
-
-
-
 });
 
 server.listen(port, () => {
