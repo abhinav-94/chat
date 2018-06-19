@@ -4,7 +4,7 @@ const http=require('http'); //built in module no need to install we can simply r
 const express=require('express');
 const nodemon=require('nodemon');
 const socketIO=require('socket.io');
-const {generateMessage}=require('./utils/message');
+const {generateMessage,generateLocationMessage}=require('./utils/message');
 var app=express(); //app variable for configuring our express application
 
 const publicPath=path.join(__dirname,'../public');
@@ -24,6 +24,10 @@ io.on('connection',(socket)=>{
   //emit is not a listener so not providing ca;lback function
   socket.on('disconnect',()=>{
     console.log("User was disconnected");
+  });
+
+  socket.on('createLocationMessage',(coords)=>{
+    io.emit('newLocationMessage',generateLocationMessage('Admin',coords.latitude,coords.longitude));
   });
 
   socket.on('createMessage',(message,callback)=>{

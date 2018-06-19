@@ -46,3 +46,40 @@ jQuery('#message-form').on('submit',function(e){
   });
 
 });
+
+socket.on('newLocationMessage',function (message) {
+  var li=jQuery('<li></li>');
+  var a=jQuery('<a target="_blank">My current location</a>');
+  //blank causes the location to open in new tab
+  li.text(`${message.from}:`);
+  a.attr('href',message.url);
+  //attr() if with one argument it fetches the value,
+  //and if with 2 arguments then it sets the value for that argument
+  li.append(a);
+  jQuery('#messages').append(li);
+
+});
+
+//jQuery('#send-location').on... is same as creating a variable locationButton
+//and then on that variable
+//benefit of below method is that we have a reusable variable
+
+var locationButton = jQuery('#send-location');
+locationButton.on('click',function(){
+//geolocation api exists on navigator.geolocation
+//we want to check if it exists on user's browser
+//alert is availabl on all browsers
+  if(!navigator.geolocation){
+    return alert('Feature doesnt exist');
+  }
+  //getCurrentPosition takes two arguments first one is a
+  //success function and second is our error handler
+  navigator.geolocation.getCurrentPosition(function(position){
+  socket.emit('createLocationMessage',{
+    longitude:position.coords.longitude,
+    latitude:position.coords.latitude
+  });
+  },function(){
+    alert('Not able to fetch location');
+  });
+});
