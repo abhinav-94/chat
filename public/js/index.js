@@ -37,12 +37,12 @@ socket.on('newMessage',function(message){
 //which causes page to refresh
 jQuery('#message-form').on('submit',function(e){
   e.preventDefault();
-
+  var messageTextbox=jQuery('[name=message]');
   socket.emit('createMessage',{
     from:'User',
     text:jQuery('[name=message]').val()
   }, function (){
-
+    messageTextbox.val('');
   });
 
 });
@@ -72,14 +72,18 @@ locationButton.on('click',function(){
   if(!navigator.geolocation){
     return alert('Feature doesnt exist');
   }
+
+  locationButton.attr('disabled','disabled').text('Sending');
   //getCurrentPosition takes two arguments first one is a
   //success function and second is our error handler
   navigator.geolocation.getCurrentPosition(function(position){
+    locationButton.removeAttr('disabled').text('Send Location');
   socket.emit('createLocationMessage',{
     longitude:position.coords.longitude,
     latitude:position.coords.latitude
   });
   },function(){
+    locationButton.removeAttr('disabled').text('Send Location');
     alert('Not able to fetch location');
   });
 });

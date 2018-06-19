@@ -38,7 +38,7 @@ io.on('connection',(socket)=>{
   // text:message.text,
   // createdAt:new Date().getTime()
   // });
-  callback('this is from the server');//it is going to send an event back to the server
+  callback();//it is going to send an event back to the server
 
   });
   //we are in our node code therefore we can use arrow function
