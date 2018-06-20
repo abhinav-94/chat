@@ -20,7 +20,8 @@ socket.on('newMessage',function(message){
   //we are going to create element and then modify that element
   //and add it to markup
   var li=jQuery('<li></li>');
-  li.text(`${message.from}: ${message.text}`);
+  var formattedTimeStamp=moment(message.createdAt).format('h:mm a');
+  li.text(`${message.from} ${formattedTimeStamp}: ${message.text}`);
   jQuery('#messages').append(li);
 
 });
@@ -51,7 +52,8 @@ socket.on('newLocationMessage',function (message) {
   var li=jQuery('<li></li>');
   var a=jQuery('<a target="_blank">My current location</a>');
   //blank causes the location to open in new tab
-  li.text(`${message.from}:`);
+  var formattedTimeStamp=moment(message.createdAt).format('h:mm a');
+  li.text(`${message.from} ${formattedTimeStamp}: `);
   a.attr('href',message.url);
   //attr() if with one argument it fetches the value,
   //and if with 2 arguments then it sets the value for that argument
