@@ -12,8 +12,13 @@
 // //representing correct point in time
 // date.add(1,'year');
 // console.log(date.format('MMM YYYY Do'));
+
 var moment=require('moment');
+var x=new Date().getTime();
+console.log(x);
 var someTimestamp=moment().valueOf();//returns milliseconds from unix time ie 1970
-var timestamp=60000;
-var date=moment(timestamp);
-console.log(date.format('h:mm a'));
+console.log(moment());
+console.log(someTimestamp);
+// var timestamp=60000;
+var date=moment(someTimestamp);
+console.log(date.format('DD MM YYYY h:mm a'));

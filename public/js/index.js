@@ -15,14 +15,22 @@ var socket=io();
 
 //data emitted from client side is sent as argument to callback function
 socket.on('newMessage',function(message){
-  console.log("new message",message);
-  //we are using jquery differently, rather than selecting element
-  //we are going to create element and then modify that element
-  //and add it to markup
-  var li=jQuery('<li></li>');
-  var formattedTimeStamp=moment(message.createdAt).format('h:mm a');
-  li.text(`${message.from} ${formattedTimeStamp}: ${message.text}`);
-  jQuery('#messages').append(li);
+    var formattedTimeStamp=moment(message.createdAt).format('h:mm a');
+    var template=jQuery('#message-template').html();//html() will return markup inside of message template
+    var html=Mustache.render(template,{
+      text:message.text,
+      from:message.from,
+      createdAt:formattedTimeStamp
+    });//need to pass second value for providing values to {{}}
+    jQuery('#messages').append(html);
+  // console.log("new message",message);
+  // //we are using jquery differently, rather than selecting element
+  // //we are going to create element and then modify that element
+  // //and add it to markup
+  // var li=jQuery('<li></li>');
+
+  // li.text(`${message.from} ${formattedTimeStamp}: ${message.text}`);
+  // jQuery('#messages').append(li);
 
 });
 
@@ -49,16 +57,28 @@ jQuery('#message-form').on('submit',function(e){
 });
 
 socket.on('newLocationMessage',function (message) {
-  var li=jQuery('<li></li>');
-  var a=jQuery('<a target="_blank">My current location</a>');
-  //blank causes the location to open in new tab
+
   var formattedTimeStamp=moment(message.createdAt).format('h:mm a');
-  li.text(`${message.from} ${formattedTimeStamp}: `);
-  a.attr('href',message.url);
-  //attr() if with one argument it fetches the value,
-  //and if with 2 arguments then it sets the value for that argument
-  li.append(a);
-  jQuery('#messages').append(li);
+  var template=jQuery('#locationMessage-template').html();//html() will return markup inside of message template
+  var html=Mustache.render(template,{
+    createdAt:formattedTimeStamp,
+    from:message.from,
+    url:message.url
+  });//need to pass second value for providing values to {{}}
+  jQuery('#messages').append(html);
+
+
+
+  // var li=jQuery('<li></li>');
+  // var a=jQuery('<a target="_blank">My current location</a>');
+  // //blank causes the location to open in new tab
+  // var formattedTimeStamp=moment(message.createdAt).format('h:mm a');
+  // li.text(`${message.from} ${formattedTimeStamp}: `);
+  // a.attr('href',message.url);
+  // //attr() if with one argument it fetches the value,
+  // //and if with 2 arguments then it sets the value for that argument
+  // li.append(a);
+  // jQuery('#messages').append(li);
 
 });
 
