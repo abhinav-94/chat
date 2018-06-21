@@ -1,6 +1,30 @@
 var socket=io();
      //available to us because we loaded in the library
      //opens up a socket io connection
+function scrollToBottom(){
+
+  //selectors
+  var messages=jQuery('#messages');
+  var newMessage=messages.children('li:last-child');
+  //children method lets us write a selector specific to childern of messages
+  //this means we will have all of our list items
+  //maybe we want to select all childern that are paragraphs
+  //in our case we will select the list items
+
+  //heights
+  var clientHeight=messages.prop('clientHeight');//gives us a cross browser way to fetch a property
+  var scrollTop=messages.prop('scrollTop');
+  var scrollHeight=messages.prop('scrollHeight');
+  var newMessageHeight=newMessage.innerHeight();
+  //takes into height including padding that we applied via css
+  var lastMessageHeight=newMessage.prev().innerHeight();
+
+  if(clientHeight+scrollTop+newMessageHeight+lastMessageHeight>=scrollHeight){
+    messages.scrollTop(scrollHeight);
+  }
+}
+//need to call this function whenever new message or
+//newLocationMessage comes up
  socket.on('connect',function () {
    console.log("connected to server");
   });
@@ -31,6 +55,7 @@ socket.on('newMessage',function(message){
 
   // li.text(`${message.from} ${formattedTimeStamp}: ${message.text}`);
   // jQuery('#messages').append(li);
+  scrollToBottom();
 
 });
 
@@ -79,7 +104,7 @@ socket.on('newLocationMessage',function (message) {
   // //and if with 2 arguments then it sets the value for that argument
   // li.append(a);
   // jQuery('#messages').append(li);
-
+  scrollToBottom();
 });
 
 //jQuery('#send-location').on... is same as creating a variable locationButton
