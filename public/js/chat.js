@@ -18,9 +18,13 @@ function scrollToBottom(){
   var newMessageHeight=newMessage.innerHeight();
   //takes into height including padding that we applied via css
   var lastMessageHeight=newMessage.prev().innerHeight();
-
+  // using last message height also in addition to new message height
+  //so that if we are pretty close to the bottom like a few
+  //pixels above then also
+  //we get to the bottom because that is pretty much a user wants
   if(clientHeight+scrollTop+newMessageHeight+lastMessageHeight>=scrollHeight){
     messages.scrollTop(scrollHeight);
+    //jquery method for setting that scroll top value
   }
 }
 //need to call this function whenever new message or
