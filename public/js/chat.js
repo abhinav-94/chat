@@ -30,7 +30,18 @@ function scrollToBottom(){
 //need to call this function whenever new message or
 //newLocationMessage comes up
  socket.on('connect',function () {
-   console.log("connected to server");
+   var params=jQuery.deparam(window.location.search);
+   socket.emit('join',params,function(err){
+     if(err){
+       alert(err);
+            window.location.href='/';
+            //Sending the user back to root page if form validation fails
+     }
+     else{
+       console.log('No error');
+     }
+   });
+
   });
  //we are using the arrow function available to us in es6
 //but it may not work in mobile phones,etc
@@ -41,6 +52,16 @@ function scrollToBottom(){
    console.log("Disconnected from server");
  });
 
+ socket.on('updateUserList',function(users){
+   var ol=jQuery('<ol></ol>');
+
+   users.forEach(function(user){
+  ol.append(jQuery('<li></li>').text(user));
+   });
+     // console.log('Users list',users);
+     jQuery('#users').html(ol);
+
+ });
 //data emitted from client side is sent as argument to callback function
 socket.on('newMessage',function(message){
     var formattedTimeStamp=moment(message.createdAt).format('h:mm a');
@@ -77,7 +98,7 @@ jQuery('#message-form').on('submit',function(e){
   e.preventDefault();
   var messageTextbox=jQuery('[name=message]');
   socket.emit('createMessage',{
-    from:'User',
+    // from:'User',
     text:jQuery('[name=message]').val()
   }, function (){
     messageTextbox.val('');
