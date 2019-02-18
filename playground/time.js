@@ -14,11 +14,11 @@
 // console.log(date.format('MMM YYYY Do'));
 
 var moment=require('moment');
-var x=new Date().getTime();
-console.log(x);
+// var x=new Date().getTime();
+// console.log(x);
 var someTimestamp=moment().valueOf();//returns milliseconds from unix time ie 1970
-console.log(moment());
-console.log(someTimestamp);
-// var timestamp=60000;
+// console.log(moment());
+// console.log(someTimestamp);
+var timestamp=60000;
 var date=moment(someTimestamp);
 console.log(date.format('DD MM YYYY h:mm a'));

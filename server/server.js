@@ -12,6 +12,7 @@ const{Users}=require('./utils/users');
 
 var app=express(); //app variable for configuring our express application
 
+console.log(__dirname);
 const publicPath=path.join(__dirname,'../public');
 const port=process.env.PORT||3000; //doing it for Heroku Deployment
 console.log(publicPath);
@@ -35,6 +36,7 @@ io.on('connection',(socket)=>{
        return callback('Name and room name are required');
        //return so that none of the code below fires if the data is not valid
     }
+    console.log(socket.id);
 
     socket.join(params.room);
     //socket.leave('the office')

@@ -62,6 +62,8 @@ function scrollToBottom(){
      jQuery('#users').html(ol);
 
  });
+
+ 
 //data emitted from client side is sent as argument to callback function
 socket.on('newMessage',function(message){
     var formattedTimeStamp=moment(message.createdAt).format('h:mm a');
